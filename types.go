@@ -1,11 +1,5 @@
 package flexmap
 
-// Item is a key value pair
-type Item interface {
-	Key() interface{}
-	Value() interface{}
-}
-
 // Map is a flexible map structure which allows generic keys and values
 type Map interface {
 	Map() (interface{}, error)
