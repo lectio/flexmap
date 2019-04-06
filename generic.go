@@ -1,20 +1,20 @@
 package flexmap
 
 // GenericMap is an implementation of FlexMap for untyped keys and values
-type GenericMap map[interface{}]interface{}
+type genericMap map[interface{}]interface{}
 
 // MakeGenericMap returns a new, empty GenericMap
-func MakeGenericMap() GenericMap {
-	return make(map[interface{}]interface{})
+func MakeGenericMap() Map {
+	return make(genericMap)
 }
 
 // Map returns the underlying map data structure
-func (m GenericMap) Map() (interface{}, error) {
+func (m genericMap) Map() (interface{}, error) {
 	return m, nil
 }
 
-// MapValue returns the value of key in the GenericMap
-func (m GenericMap) MapValue(key interface{}) (interface{}, bool, error) {
+// MapValue returns the value of key
+func (m genericMap) MapValue(key interface{}) (interface{}, bool, error) {
 	value, ok := m[key]
 	return value, ok, nil
 }
