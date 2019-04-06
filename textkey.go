@@ -30,6 +30,13 @@ func (m textKeyMap) MapValue(key interface{}) (interface{}, bool, error) {
 	return value, ok, nil
 }
 
+// ForEachKey iterates and executes function fn for each key value pair
+func (m textKeyMap) ForEachKey(fn func(key interface{}, value interface{})) {
+	for key, value := range m {
+		fn(key, value)
+	}
+}
+
 // TextKeyValue returns the generic value of a key
 func (m textKeyMap) TextKeyValue(key string) (interface{}, bool) {
 	value, ok := m[key]
@@ -44,5 +51,12 @@ func (m textKeyMap) TextKeyTextValue(key string) (string, bool, error) {
 		return v, ok, nil
 	default:
 		return "", ok, fmt.Errorf("key %q value %v is not a string", key, value)
+	}
+}
+
+// ForEachKey iterates and executes function fn for each key value pair
+func (m textKeyMap) ForEachTextKey(fn func(key string, value interface{})) {
+	for key, value := range m {
+		fn(key, value)
 	}
 }

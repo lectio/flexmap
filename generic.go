@@ -18,3 +18,10 @@ func (m genericMap) MapValue(key interface{}) (interface{}, bool, error) {
 	value, ok := m[key]
 	return value, ok, nil
 }
+
+// ForEachKey iterates and executes function fn for each key value pair
+func (m genericMap) ForEachKey(fn func(key interface{}, value interface{})) {
+	for key, value := range m {
+		fn(key, value)
+	}
+}
