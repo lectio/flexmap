@@ -20,8 +20,11 @@ func (m genericMap) MapValue(key interface{}) (interface{}, bool, error) {
 }
 
 // ForEachKey iterates and executes function fn for each key value pair
-func (m genericMap) ForEachKey(fn func(key interface{}, value interface{})) {
+func (m genericMap) ForEachKey(fn func(key interface{}, value interface{}) bool) {
 	for key, value := range m {
-		fn(key, value)
+		keepGoing := fn(key, value)
+		if !keepGoing {
+			break
+		}
 	}
 }

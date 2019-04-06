@@ -12,11 +12,25 @@ func MakeTextKeyMap() TextKeyMap {
 	return make(textKeyMap)
 }
 
-// MakeCustomTextKeyMap returns a new TextKeyMap after calling the initializer function to fill contents
+// MakeCustomTextKeyMap returns a new TextKeyMap after calling the initializer function to fill contents of v using Unmarshal or similar
 func MakeCustomTextKeyMap(initFn func(v interface{}) error) (TextKeyMap, error) {
 	m := make(textKeyMap)
 	err := initFn(&m)
 	return m, err
+}
+
+// MakeTextKeyMapWithDefaults returns a new TextKeyMap by preloading the array of keys and values
+func MakeTextKeyMapWithDefaults(rangeFn func() (startIndex int, endIndex int, iteratorFn func(index int) (Item, bool))) (TextKeyMap, error) {
+	m := make(textKeyMap)
+	start, end, fn := rangeFn()
+	for i := start; i <= end; i++ {
+		item, keepGoing := fn(i)
+		m[item.Key().(string)] = item.Value()
+		if !keepGoing {
+			break
+		}
+	}
+	return m, nil
 }
 
 // Map returns the underlying map data structure
@@ -31,9 +45,12 @@ func (m textKeyMap) MapValue(key interface{}) (interface{}, bool, error) {
 }
 
 // ForEachKey iterates and executes function fn for each key value pair
-func (m textKeyMap) ForEachKey(fn func(key interface{}, value interface{})) {
+func (m textKeyMap) ForEachKey(fn func(key interface{}, value interface{}) bool) {
 	for key, value := range m {
-		fn(key, value)
+		keepGoing := fn(key, value)
+		if !keepGoing {
+			break
+		}
 	}
 }
 
@@ -54,9 +71,12 @@ func (m textKeyMap) TextKeyTextValue(key string) (string, bool, error) {
 	}
 }
 
-// ForEachKey iterates and executes function fn for each key value pair
-func (m textKeyMap) ForEachTextKey(fn func(key string, value interface{})) {
+// ForEachTextKey iterates and executes function fn for each key value pair
+func (m textKeyMap) ForEachTextKey(fn func(key string, value interface{}) bool) {
 	for key, value := range m {
-		fn(key, value)
+		keepGoing := fn(key, value)
+		if !keepGoing {
+			break
+		}
 	}
 }
