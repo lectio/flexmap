@@ -3,6 +3,11 @@ package flexmap
 // GenericMap is an implementation of FlexMap for untyped keys and values
 type GenericMap map[interface{}]interface{}
 
+// MakeGenericMap returns a new, empty GenericMap
+func MakeGenericMap() GenericMap {
+	return make(map[interface{}]interface{})
+}
+
 // Map returns the underlying map data structure
 func (m GenericMap) Map() (interface{}, error) {
 	return m, nil
