@@ -1,0 +1,1 @@
+TODO: Evaluate a consider replacing this package with [golang-set](https://github.com/deckarep/golang-set)
